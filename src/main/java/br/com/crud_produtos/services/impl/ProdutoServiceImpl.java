@@ -4,10 +4,12 @@ import br.com.crud_produtos.model.dto.ProdutoResponseDto;
 import br.com.crud_produtos.model.entities.ProdutoEntity;
 import br.com.crud_produtos.repositories.ProdutoRepository;
 import br.com.crud_produtos.services.ProdutoService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ProdutoServiceImpl implements ProdutoService {
 
     private final ProdutoRepository produtoRepository;
