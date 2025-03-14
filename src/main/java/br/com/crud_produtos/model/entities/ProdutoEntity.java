@@ -3,9 +3,7 @@ package br.com.crud_produtos.model.entities;
 import br.com.crud_produtos.model.dto.ProdutoRequestDto;
 import br.com.crud_produtos.model.dto.ProdutoResponseDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -40,6 +38,10 @@ public class ProdutoEntity {
     }
 
     public ProdutoEntity() {
+    }
+
+    public ProdutoEntity(UUID uuid) {
+        this.id = uuid;
     }
 
     public ProdutoEntity(UUID id, String descricao, String fabricante, Double preco) {

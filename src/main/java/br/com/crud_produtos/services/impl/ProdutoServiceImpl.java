@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,5 +37,10 @@ public class ProdutoServiceImpl implements ProdutoService {
     public ProdutoResponseDto save(ProdutoRequestDto dto) {
         ProdutoEntity produtoEntity = ProdutoEntity.toEntity(dto);
         return produtoRepository.save(produtoEntity).toDto();
+    }
+
+    @Override
+    public void delete(UUID uuid) {
+        produtoRepository.delete(new ProdutoEntity(uuid));
     }
 }

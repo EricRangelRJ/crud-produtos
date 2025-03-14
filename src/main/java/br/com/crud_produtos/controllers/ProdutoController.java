@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/produto")
@@ -38,6 +39,11 @@ public class ProdutoController {
 
     }
 
-
+    @Operation(summary = "Deletar Produto por ID")
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<String> delete(@PathVariable UUID uuid) {
+        service.delete(uuid);
+        return ResponseEntity.ok("Produto deletado com sucesso!");
+    }
 
 }
