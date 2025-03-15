@@ -8,6 +8,7 @@ import java.util.UUID;
 @Builder
 public record ProdutoResponseDto
         (
+                @Schema(description = "uuid", example = "3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 UUID id,
                 @Schema(description = "descricao", example = "Teclado mecânico")
                 String descricao,

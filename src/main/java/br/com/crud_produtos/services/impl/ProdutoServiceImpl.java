@@ -1,14 +1,15 @@
 package br.com.crud_produtos.services.impl;
 
+import br.com.crud_produtos.exceptions.ProdutoNotFoundException;
 import br.com.crud_produtos.model.dto.ProdutoRequestDto;
 import br.com.crud_produtos.model.dto.ProdutoResponseDto;
 import br.com.crud_produtos.model.entities.ProdutoEntity;
 import br.com.crud_produtos.repositories.ProdutoRepository;
 import br.com.crud_produtos.services.ProdutoService;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -17,11 +18,9 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     private final ProdutoRepository produtoRepository;
 
-    private final ModelMapper modelMapper;
 
-    public ProdutoServiceImpl(ProdutoRepository produtoRepository, ModelMapper modelMapper) {
+    public ProdutoServiceImpl(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -34,6 +33,13 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
+    public ProdutoResponseDto findById(UUID id) {
+        Optional<ProdutoEntity> result = produtoRepository.findById(id);
+        return result.map(ProdutoEntity::toDto)
+                .orElseThrow(() -> new ProdutoNotFoundException(id));
+    }
+
+    @Override
     public ProdutoResponseDto save(ProdutoRequestDto dto) {
         ProdutoEntity produtoEntity = ProdutoEntity.toEntity(dto);
         return produtoRepository.save(produtoEntity).toDto();
@@ -43,4 +49,16 @@ public class ProdutoServiceImpl implements ProdutoService {
     public void delete(UUID uuid) {
         produtoRepository.delete(new ProdutoEntity(uuid));
     }
+
+    @Override
+    public ProdutoResponseDto update(ProdutoRequestDto dto) {
+        Optional<ProdutoEntity> produto = produtoRepository.findById(dto.id());
+        if (produto.isPresent()) {
+            ProdutoEntity produtoAtualizado = ProdutoEntity.toEntity(dto);
+            return produtoRepository.save(produtoAtualizado).toDto();
+        } else {
+            throw new ProdutoNotFoundException(dto.id());
+        }
+    }
+
 }

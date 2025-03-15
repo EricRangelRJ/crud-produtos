@@ -12,7 +12,11 @@ public interface ProdutoService {
 
     List<ProdutoResponseDto> findAll();
 
+    ProdutoResponseDto findById(UUID id);
+
     ProdutoResponseDto save(ProdutoRequestDto dto);
 
     void delete(UUID uuid);
+
+    ProdutoResponseDto update(ProdutoRequestDto dto);
 }

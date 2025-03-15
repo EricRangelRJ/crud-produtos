@@ -4,6 +4,7 @@ import br.com.crud_produtos.model.dto.ProdutoRequestDto;
 import br.com.crud_produtos.model.dto.ProdutoResponseDto;
 import br.com.crud_produtos.services.impl.ProdutoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -31,12 +32,25 @@ public class ProdutoController {
         return ResponseEntity.ok(service.findAll());
     }
 
+    @Operation(summary = "Buscar produto por Id")
+    @GetMapping("/{uuid}")
+    public ResponseEntity<ProdutoResponseDto> findById(@PathVariable UUID uuid) {
+        ProdutoResponseDto dto = service.findById(uuid);
+        return ResponseEntity.ok(dto);
+    }
+
     @Operation(summary = "Cadastrar novo Produto")
     @PostMapping
     public ResponseEntity<ProdutoResponseDto> save(@RequestBody ProdutoRequestDto dto){
         logger.info("::: Salvando novo produto {} ::: ");
         return ResponseEntity.ok(service.save(dto));
+    }
 
+
+    @Operation(summary = "Atualizar produto")
+    @PutMapping()
+    public ResponseEntity<ProdutoResponseDto> update(@Valid @RequestBody ProdutoRequestDto dto) {
+        return ResponseEntity.ok(service.update(dto));
     }
 
     @Operation(summary = "Deletar Produto por ID")
