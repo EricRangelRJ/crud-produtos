@@ -34,7 +34,7 @@ public class ProdutoEntity {
     }
 
     public static ProdutoEntity toEntity(ProdutoRequestDto dto) {
-        return new ProdutoEntity(null, dto.descricao(), dto.fabricante(), dto.preco());
+        return new ProdutoEntity(dto.id(), dto.descricao(), dto.fabricante(), dto.preco());
     }
 
     public ProdutoEntity() {

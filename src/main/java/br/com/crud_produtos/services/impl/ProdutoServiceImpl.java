@@ -47,18 +47,25 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public void delete(UUID uuid) {
-        produtoRepository.delete(new ProdutoEntity(uuid));
+        Optional<ProdutoEntity> produto = produtoRepository.findById(uuid);
+        if (produto.isPresent()){
+            produtoRepository.delete(new ProdutoEntity(uuid));
+        } else {
+            throw new ProdutoNotFoundException(uuid);
+        }
     }
 
     @Override
     public ProdutoResponseDto update(ProdutoRequestDto dto) {
-        Optional<ProdutoEntity> produto = produtoRepository.findById(dto.id());
+        UUID produtoId = dto.id(); // Guardando o id para evitar repetições
+        Optional<ProdutoEntity> produto = produtoRepository.findById(produtoId);
         if (produto.isPresent()) {
             ProdutoEntity produtoAtualizado = ProdutoEntity.toEntity(dto);
             return produtoRepository.save(produtoAtualizado).toDto();
         } else {
-            throw new ProdutoNotFoundException(dto.id());
+            throw new ProdutoNotFoundException(produtoId); // Passando o id na exceção
         }
     }
+
 
 }
